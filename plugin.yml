@@ -1,0 +1,5 @@
+name: RecentPlayer
+main: edu.illinois.jaa2.recentplayer.RecentPlayer
+version: 1.0
+author: jaa2
+description: "Informs players of when others were last online"

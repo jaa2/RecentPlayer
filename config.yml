@@ -1,0 +1,11 @@
+# RecentPlayer configuration file
+
+# Locale to use with "time ago" messages
+locale: en
+
+# Specifies the maximum number of logged in players to display the message
+message-max-players: 1
+
+# If players log off within this window time (in minutes), they will be announced together
+# when the next player logs in
+player-grouping-window: 15
