@@ -55,7 +55,9 @@ public class PlayerListener implements Listener {
 		if (event.getPlayer().getServer().getOnlinePlayers().size() <= messageMaxPlayers && playerList.size() > 0) {
 			String playerListStr = "";
 			List<String> playerNameList = playerList.keySet().stream()
-					.map(playerUUID -> event.getPlayer().getServer().getPlayer(playerUUID).getName())
+					.map(playerUUID -> event.getPlayer().getServer().getOfflinePlayer(playerUUID))
+					.filter(player -> player != null)
+					.map(offlinePlayer -> offlinePlayer.getName())
 					.collect(Collectors.toList());
 			
 			if (playerNameList.size() == 1) {

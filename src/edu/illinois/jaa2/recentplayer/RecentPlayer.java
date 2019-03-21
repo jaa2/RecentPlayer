@@ -54,7 +54,7 @@ public class RecentPlayer extends JavaPlugin {
 		List<UUID> players = lastPlayers.keySet().stream().collect(Collectors.toList());
 		for (int i = 0; i < players.size(); i++) {
 			ConfigurationSection thisPlayerSection = playersSection.createSection(Integer.toString(i));
-			thisPlayerSection.set("player", players.get(i));
+			thisPlayerSection.set("player", players.get(i).toString());
 			thisPlayerSection.set("lastQuit", lastPlayers.get(players.get(i)));
 		}
 		
