@@ -1,11 +1,6 @@
 package edu.illinois.jaa2.recentplayer;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.OptionalLong;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
@@ -56,15 +51,14 @@ public class PlayerListener implements Listener {
 			String playerListStr = "";
 			List<String> playerNameList = playerList.keySet().stream()
 					.map(playerUUID -> event.getPlayer().getServer().getOfflinePlayer(playerUUID))
-					.filter(player -> player != null)
-					.map(offlinePlayer -> offlinePlayer.getName())
+                    .filter(player -> player != null)
+					.map(OfflinePlayer::getName)
 					.collect(Collectors.toList());
 			
 			if (playerNameList.size() == 1) {
 				playerListStr = playerNameList.get(0) + " was";
 			} else if (playerNameList.size() >= 2) {
-				playerListStr = playerNameList.subList(0, playerNameList.size() - 1).stream()
-						.collect(Collectors.joining(", "))
+				playerListStr = String.join(", ", playerNameList.subList(0, playerNameList.size() - 1))
 						+ (playerNameList.size() > 2 ? "," : "") + " and " + playerNameList.get(playerNameList.size() - 1)
 						+ " were";
 			}
@@ -72,7 +66,8 @@ public class PlayerListener implements Listener {
 			OptionalLong latestTime = playerList.values().stream().mapToLong(date -> date).max();
 			if (latestTime.isPresent()) {
 				PrettyTime prettyTime = new PrettyTime(locale);
-				event.getPlayer().sendMessage(ChatColor.GREEN + playerListStr + " last online " + prettyTime.format(new Date(latestTime.getAsLong())));
+				event.getPlayer().sendMessage(ChatColor.GREEN + playerListStr + " last online "
+                        + prettyTime.format(new Date(latestTime.getAsLong())));
 			}
 		}
 	}
