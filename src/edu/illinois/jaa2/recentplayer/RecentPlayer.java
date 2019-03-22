@@ -2,10 +2,7 @@ package edu.illinois.jaa2.recentplayer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
@@ -42,16 +39,16 @@ public class RecentPlayer extends JavaPlugin {
 	
 	/**
 	 * Saves the players who were last online
-	 * @param playerList list of players and their logout times
+	 * @param lastPlayers list of players and their logout times
 	 */
-	public void saveLastPlayers(Map<UUID, Long> lastPlayers) {
+	private void saveLastPlayers(Map<UUID, Long> lastPlayers) {
 		File lastPlayersFile = new File(getDataFolder(), "lastPlayers.yml");
 		FileConfiguration lastPlayersConfig = YamlConfiguration.loadConfiguration(lastPlayersFile);
 		
 		lastPlayersConfig.set("lastPlayers", null);
 		ConfigurationSection playersSection = lastPlayersConfig.createSection("lastPlayers");
 		
-		List<UUID> players = lastPlayers.keySet().stream().collect(Collectors.toList());
+		List<UUID> players = new ArrayList<>(lastPlayers.keySet());
 		for (int i = 0; i < players.size(); i++) {
 			ConfigurationSection thisPlayerSection = playersSection.createSection(Integer.toString(i));
 			thisPlayerSection.set("player", players.get(i).toString());
@@ -71,12 +68,12 @@ public class RecentPlayer extends JavaPlugin {
 	 * Loads the players who were online last
 	 * @return map of OfflinePlayer to the (Long) time he or she was online last
 	 */
-	public Map<UUID, Long> loadLastPlayers() {
+	private Map<UUID, Long> loadLastPlayers() {
 		// Load the YML file with the last players
 		File lastPlayersFile = new File(getDataFolder(), "lastPlayers.yml");
 		YamlConfiguration lastPlayersConfig = YamlConfiguration.loadConfiguration(lastPlayersFile);
 
-		Map<UUID, Long> lastPlayers = new HashMap<UUID, Long>();
+		Map<UUID, Long> lastPlayers = new HashMap<>();
 		
 		if (lastPlayersConfig.isSet("lastPlayers")) {
 			ConfigurationSection lastPlayersSection = lastPlayersConfig.getConfigurationSection("lastPlayers");
@@ -90,9 +87,9 @@ public class RecentPlayer extends JavaPlugin {
 				
 				try {
 					UUID player = UUID.fromString(playerSection.getString("player"));
-					Long lastQuitTime = playerSection.getLong("lastQuit", -1);
+					long lastQuitTime = playerSection.getLong("lastQuit", -1);
 					
-					if (lastQuitTime != -1 && player != null) {
+					if (lastQuitTime != -1) {
 						lastPlayers.put(player, lastQuitTime);
 					} else {
 						getLogger().info("Uh-oh: last quit time is " + lastQuitTime + " and offline player is " + player);

@@ -20,7 +20,7 @@ public class PlayerListener implements Listener {
 	private long messageMaxPlayers;
 	private Locale locale;
 	
-	public PlayerListener(Map<UUID, Long> playerList, FileConfiguration config) {
+	PlayerListener(Map<UUID, Long> playerList, FileConfiguration config) {
 		this.playerList = playerList;
 		
 		// Load config
@@ -34,7 +34,7 @@ public class PlayerListener implements Listener {
 	 * Gets the list of last players
 	 * @return list of last players
 	 */
-	public Map<UUID, Long> getLastPlayers() {
+	Map<UUID, Long> getLastPlayers() {
 		return playerList;
 	}
 	
@@ -72,13 +72,13 @@ public class PlayerListener implements Listener {
 		}
 	}
 	
-	public void addPlayerToList(OfflinePlayer player) {
+	private void addPlayerToList(OfflinePlayer player) {
 		Date windowStart = new Date((long) (System.currentTimeMillis() - 1000 * 60 * groupingWindow));
 		playerList.keySet().removeIf(offp -> (playerList.get(offp) < windowStart.getTime()));
 		playerList.put(player.getUniqueId(), System.currentTimeMillis());
 	}
 	
-	public void filterPlayerList() {
+	private void filterPlayerList() {
 		playerList.keySet().removeIf(playerUUID -> Bukkit.getServer().getOfflinePlayer(playerUUID).isOnline());
 	}
 }
