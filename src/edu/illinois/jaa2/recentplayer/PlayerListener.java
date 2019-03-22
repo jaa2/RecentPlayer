@@ -73,7 +73,7 @@ public class PlayerListener implements Listener {
 	}
 	
 	public void addPlayerToList(OfflinePlayer player) {
-		Date windowStart = new Date((long) (System.currentTimeMillis() - 1000 * 60 * 60 * groupingWindow));
+		Date windowStart = new Date((long) (System.currentTimeMillis() - 1000 * 60 * groupingWindow));
 		playerList.keySet().removeIf(offp -> (playerList.get(offp) < windowStart.getTime()));
 		playerList.put(player.getUniqueId(), System.currentTimeMillis());
 	}
